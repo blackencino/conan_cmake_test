@@ -1,4 +1,4 @@
-project(conan_test CXX)
+project(conan_cmake_test CXX)
 cmake_minimum_required(VERSION 2.8.12)
 
 # Download automatically, you can also just copy the conan.cmake file
@@ -14,13 +14,14 @@ conan_cmake_run(CONANFILE conanfile.txt
                 BASIC_SETUP
                 BUILD missing)
 
-add_library(conan_test_stuff
-            imgui_backend/imgui_impl_glfw.cpp
-            imgui_backend/imgui_impl_glfw.h
-            imgui_backend/imgui_impl_opengl3.cpp
-            imgui_backend/imgui_impl_opengl3.h)
-target_link_libraries(conan_test_stuff PUBLIC ${CONAN_LIBS})
+add_library(imgui_backend
+            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_glfw.cpp
+            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_glfw.h
+            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_opengl3.cpp
+            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_opengl3.h)
+target_link_libraries(imgui_backend PUBLIC ${CONAN_LIBS})
+target_include_directories(imgui_backend PUBLIC ${CMAKE_BINARY_DIR}/imgui_backend)
 
-add_executable(conan_test example_glfw_opengl3.cpp)
-target_link_libraries(conan_test PUBLIC conan_test_stuff)
+add_executable(conan_cmake_test main.cpp)
+target_link_libraries(conan_cmake_test PUBLIC imgui_backend)
 

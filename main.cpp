@@ -5,8 +5,8 @@
 #define IMGUI_IMPL_OPENGL_LOADER_GLAD 1
 
 #include "imgui.h"
-#include "imgui_backend/imgui_impl_glfw.h"
-#include "imgui_backend/imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 #include <stdio.h>
 
 // About Desktop OpenGL function loaders:

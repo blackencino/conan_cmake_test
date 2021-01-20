@@ -14,4 +14,11 @@ glad:no_loader=False
 glad:gl_profile=core
 glad:gl_version=4.1
 
+[imports]
+./res/bindings, imgui_impl_glfw.cpp -> imgui_backend
+./res/bindings, imgui_impl_opengl3.cpp -> imgui_backend
+./res/bindings, imgui_impl_glfw.h -> imgui_backend
+./res/bindings, imgui_impl_opengl3.h -> imgui_backend
+
+
 
