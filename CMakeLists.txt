@@ -1,12 +1,13 @@
 cmake_minimum_required(VERSION 3.8.0)
-project(conan_cmake_test LANGUAGES CXX CUDA)
+#project(conan_cmake_test LANGUAGES CXX CUDA)
+project(conan_cmake_test LANGUAGES CXX)
 
-enable_language(CUDA)
+#enable_language(CUDA)
 
-set(CMAKE_CXX_STANDARD	17)				#	isn’t	part	of	the	projects	
-set(CMAKE_CUDA_STANDARD	17)			#	export	information.
+set(CMAKE_CXX_STANDARD	17)				#	isn’t	part	of	the	projects
+#set(CMAKE_CUDA_STANDARD	17)			#	export	information.
 set(CMAKE_CXX_EXTENSIONS	OFF)	#	target_compile_features	are!
-set(CMAKE_CUDA_EXTENSIONS	OFF)
+#set(CMAKE_CUDA_EXTENSIONS	OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Download automatically, you can also just copy the conan.cmake file
@@ -24,24 +25,24 @@ conan_cmake_run(CONANFILE conanfile.txt
 add_library(imgui_backend STATIC
             ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_glfw.h
             ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_opengl3.h
-            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_opengl3.cpp            
+            ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_opengl3.cpp
             ${CMAKE_BINARY_DIR}/imgui_backend/imgui_impl_glfw.cpp)
-target_link_libraries(imgui_backend 
+target_link_libraries(imgui_backend
                       PUBLIC
                       ${CONAN_LIBS})
 target_include_directories(imgui_backend PUBLIC ${CMAKE_BINARY_DIR}/imgui_backend)
 
 #------------------------------------------------------------------------------
-add_library(cuda_support STATIC
-            src/vecadd_tests_cuda.cuh
-            src/vecadd_tests_cuda.cu)
-target_link_libraries(cuda_support
-                      PUBLIC
-                      ${CONAN_LIBS})
-set_target_properties(cuda_support 
-                      PROPERTIES 
-                      CUDA_ARCHITECTURES 75
-                      CUDA_SEPARABLE_COMPILATION ON)
+# add_library(cuda_support STATIC
+#             src/vecadd_tests_cuda.cuh
+#             src/vecadd_tests_cuda.cu)
+# target_link_libraries(cuda_support
+#                       PUBLIC
+#                       ${CONAN_LIBS})
+# set_target_properties(cuda_support
+#                       PROPERTIES
+#                       CUDA_ARCHITECTURES 75
+#                       CUDA_SEPARABLE_COMPILATION ON)
 
 #------------------------------------------------------------------------------
 add_library(graphics_utils STATIC
@@ -57,32 +58,32 @@ add_library(graphics_utils STATIC
             src/graphics_utils/opengl_program.cpp
             src/graphics_utils/std_shaders.cpp
             )
-target_link_libraries(graphics_utils 
-                      PUBLIC 
+target_link_libraries(graphics_utils
+                      PUBLIC
                       ${CONAN_LIBS})
 target_include_directories(graphics_utils PUBLIC
                            ${CMAKE_SOURCE_DIR}/src)
 
 
 #------------------------------------------------------------------------------
-add_executable(opengl_cuda_test 
+add_executable(opengl_cuda_test
                src/graphics.h
                src/graphics.cpp
                src/main.cpp)
-target_link_libraries(opengl_cuda_test 
+target_link_libraries(opengl_cuda_test
                       PUBLIC
                       imgui_backend
-                      cuda_support
+                      #cuda_support
                       graphics_utils
                       ${CONAN_LIBS})
-set_target_properties(opengl_cuda_test 
-                      PROPERTIES 
-                      CUDA_ARCHITECTURES 75
-                      CUDA_SEPARABLE_COMPILATION ON)
+# set_target_properties(opengl_cuda_test
+#                       PROPERTIES
+#                       CUDA_ARCHITECTURES 75
+#                       CUDA_SEPARABLE_COMPILATION ON)
 
 
 # Stuff for doing cuda correctly when you want to be able to
-# have files not be compiled 
+# have files not be compiled
 #  if(NOT CUDA_FOUND)
 #    set_source_files_properties(${EXAMPLE_SOURCE_CUDA_FILES} PROPERTIES LANGUAGE
 #                                                                        CXX)

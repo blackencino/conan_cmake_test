@@ -31,7 +31,7 @@ void main() {
     out_data.camera_position = vec3(camera_hposition) / camera_hposition.w;
     out_data.camera_normal = normalize(camera_Tn_object * object_normal);
     out_data.rgb = vec3(1, 1, 1);
-    
+
     gl_Position = clip_T_camera * camera_hposition;
 }
 )SHADER";
@@ -64,7 +64,7 @@ uniform vec3 fill_light_rgb;
 
 float specular(vec3 Vn, vec3 Nn, vec3 Ln, float m) {
     vec3 H = normalize(Ln + Vn);
-    float d = dot(Nn, H); 
+    float d = dot(Nn, H);
     d *= d;
     d = max(d, 0.0);
     return pow( d, m/2 );
@@ -82,13 +82,13 @@ vec3 lighting(vec3 camera_view_direction,
               vec3 surface_diffuse_gain,
               vec3 surface_specular_gain,
               float surface_specular_exponent) {
-    vec3 Cdiff = light_rgb * surface_diffuse_gain * diffuse(camera_normal, -camera_light_direction);
-    vec3 Cspec = light_rgb * surface_specular_gain * specular(camera_view_direction, 
-                                                              camera_normal,
-                                                              -camera_light_direction,
-                                                              surface_specular_exponent);
+    vec3 diff = surface_diffuse_gain * diffuse(camera_normal, -camera_light_direction);
+    vec3 spec = surface_specular_gain * specular(camera_view_direction,
+                                                 camera_normal,
+                                                 -camera_light_direction,
+                                                 surface_specular_exponent);
 
-    return Cdiff + Cspec;
+    return light_rgb * (diff + spec);
 }
 
 vec3 gamma_correct(vec3 col, float gamma) {
@@ -123,7 +123,7 @@ void main() {
                    in_data.rgb * surface_diffuse_gain,
                    surface_specular_gain,
                    surface_specular_exponent);
-                    
+
     Ci = gamma_correct(Ci, 2.2);
     fragment_color = vec4(Ci, 1);
 }
